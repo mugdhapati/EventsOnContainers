@@ -10,6 +10,10 @@ namespace EventCatalogAPI.Data
 {
     public class EventContext : DbContext              //purpose of creating this class is to define my store
     {
+        public EventContext(DbContextOptions options) : base(options)
+        {
+
+        }
         public DbSet<EventType> EventTypes { get; set; }           //DbSet is a DB table
         public DbSet<EventLocation> EventLocations { get; set; }   //Classes Eventtype,item, location are changed into Tables
         public DbSet<EventItem> EventItems { get; set; }
