@@ -15,9 +15,9 @@ namespace EventCatalogAPI.Domain
         public decimal Price { get; set; }
         public string PictureUrl { get; set; }
         public int EventTypeId { get; set; }
-        public int EventLocationId { get; set; }    
+        public int EventCategoryId { get; set; }    
 
         public EventType EventType { get; set; }
-        public EventLocation EventLocation { get; set; }
+        public EventCategory EventCategory { get; set; }
     }   
 }

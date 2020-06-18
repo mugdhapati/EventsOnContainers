@@ -15,20 +15,19 @@ namespace EventCatalogAPI.Data
 
         }
         public DbSet<EventType> EventTypes { get; set; }           //DbSet is a DB table
-        public DbSet<EventLocation> EventLocations { get; set; }   //Classes Eventtype,item, location are changed into Tables
+        public DbSet<EventCategory> EventCategories { get; set; }   //Classes Eventtype,item, location are changed into Tables
         public DbSet<EventItem> EventItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<EventLocation>(e =>
+            modelBuilder.Entity<EventCategory>(e =>
             {
-                e.ToTable("EventLocations");
+                e.ToTable("EventCategories");
                 e.Property(l => l.Id).IsRequired()
-                                     .UseHiLo("event_location_hilo");
-                e.Property(l => l.Address).IsRequired()
+                                     .UseHiLo("event_category_hilo");
+                e.Property(l => l.Category).IsRequired()
                                            .HasMaxLength(100);
-                e.Property(l => l.DateTime).IsRequired()
-                                            .HasMaxLength(50);
+                
             });
             modelBuilder.Entity<EventType>(e =>
             {
@@ -57,9 +56,9 @@ namespace EventCatalogAPI.Data
                     .WithMany()
                     .HasForeignKey(i => i.EventTypeId);
 
-                e.HasOne(i => i.EventLocation)
+                e.HasOne(i => i.EventCategory)
                     .WithMany()
-                        .HasForeignKey(i => i.EventLocationId);
+                        .HasForeignKey(i => i.EventCategoryId);
                                         
             });
         }
