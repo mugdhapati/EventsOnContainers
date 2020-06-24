@@ -69,7 +69,7 @@ namespace EventCatalogAPI.Data
         {
             return new List<EventItem>
             {
-                new EventItem { EventTypeId = 1, EventCategoryId = 1, Name = "BE About IT", Description = "Be About It: Unpacking White Privilege, Bias, and Anti-Racist Instruction", Location = "Redmond Convention Center",  Price = 60, PictureUrl = "http://externalcatalogbaseurltobereplaced/api/pic/1" },
+                new EventItem { EventTypeId = 1, EventCategoryId = 1, Name = "BE About IT", Description = "Be About It: Unpacking White Privilege, Bias, and Anti-Racist Instruction", Location = "Redmond Convention Center", Price = 60, PictureUrl = "http://externalcatalogbaseurltobereplaced/api/pic/1" },
                 new EventItem { EventTypeId = 1, EventCategoryId = 2, Name= "Webinar Statistika", Description = "Webinar Statistika #3 | Statistical Methods (ANOVA and MANOVA)", Location = "Online", Price = 55, PictureUrl= "http://externalcatalogbaseurltobereplaced/api/pic/2" },
                 new EventItem { EventTypeId = 3, EventCategoryId = 2, Name= "ProductCon Online", Description = "ProductCon Online: The Product Management Conference", Location = "Online Event", Price = 150, PictureUrl= "http://externalcatalogbaseurltobereplaced/api/pic/3" },
                 new EventItem { EventTypeId = 2, EventCategoryId = 3, Name = "2020 NJCAAE", Description = "2020 NJCAAE Convention Day 1", Location = "Online Event",  Price = 0, PictureUrl= "http://externalcatalogbaseurltobereplaced/api/pic/4"  },
