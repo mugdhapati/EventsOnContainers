@@ -1,4 +1,5 @@
 ﻿using EventCatalogAPI.Domain;
+using EventCatalogAPI.Migrations;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,20 +16,11 @@ namespace EventCatalogAPI.Data
 
         }
         public DbSet<EventType> EventTypes { get; set; }           //DbSet is a DB table
-        public DbSet<EventCategory> EventCategories { get; set; }   //Classes Eventtype,item, location are changed into Tables
+        public DbSet<EventLocation> EventLocations { get; set; }
         public DbSet<EventItem> EventItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<EventCategory>(e =>
-            {
-                e.ToTable("EventCategories");
-                e.Property(l => l.Id).IsRequired()
-                                     .UseHiLo("event_category_hilo");
-                e.Property(l => l.Category).IsRequired()
-                                           .HasMaxLength(100);
-                
-            });
             modelBuilder.Entity<EventType>(e =>
             {
                 e.ToTable("EventTypes");
@@ -37,6 +29,15 @@ namespace EventCatalogAPI.Data
                 e.Property(t => t.Type).IsRequired()
                                         .HasMaxLength(100);
                 
+            });
+            modelBuilder.Entity<EventLocation>(e =>
+            {
+                e.ToTable("EventLocations");
+                e.Property(l => l.Id).IsRequired()
+                                     .UseHiLo("event_location_hilo");
+                e.Property(l => l.Location).IsRequired()
+                                        .HasMaxLength(100);
+
             });
             modelBuilder.Entity<EventItem>(e =>
             {
@@ -48,17 +49,16 @@ namespace EventCatalogAPI.Data
                                            .HasMaxLength(200);
                 e.Property(i => i.Location).IsRequired()
                                             .HasMaxLength(200);
-                e.Property(i => i.DateTime).IsRequired()
+                e.Property(i => i.Date).IsRequired()
                                             .HasMaxLength(50);
                 e.Property(i => i.Price).IsRequired();
 
                 e.HasOne(i => i.EventType)
                     .WithMany()
                     .HasForeignKey(i => i.EventTypeId);
-
-                e.HasOne(i => i.EventCategory)
+                e.HasOne(i => i.EventLocation)
                     .WithMany()
-                        .HasForeignKey(i => i.EventCategoryId);
+                    .HasForeignKey(i => i.EventLocationId);            
                                         
             });
         }

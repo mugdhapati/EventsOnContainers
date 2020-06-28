@@ -11,13 +11,15 @@ namespace EventCatalogAPI.Domain
         public string Name { get; set; }
         public string Description { get; set; }
         public string Location { get; set; }
-        public DateTime DateTime { get; set; }
+        public string Date { get; set; }
         public decimal Price { get; set; }
         public string PictureUrl { get; set; }
         public int EventTypeId { get; set; }
-        public int EventCategoryId { get; set; }    
+
+        public int EventLocationId { get; set; }
 
         public EventType EventType { get; set; }
-        public EventCategory EventCategory { get; set; }
+        
+        public EventLocation EventLocation { get; set; }
     }   
 }
