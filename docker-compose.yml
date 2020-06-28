@@ -1,0 +1,16 @@
+version: '3.4'
+
+networks:
+  frontend:
+  backend:
+
+services:
+  catalog:
+    image: events/eventapi
+    build:
+      context: .\EventCatalogAPI
+      dockerfile: Dockerfile
+    environment:
+      ExternalEventBaseUrl: http://localhost:5001
+    ports:
+      - "5001:80"
