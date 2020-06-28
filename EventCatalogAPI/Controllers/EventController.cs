@@ -5,6 +5,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using EventCatalogAPI.Data;
 using EventCatalogAPI.Domain;
+using EventCatalogAPI.Migrations;
 using EventCatalogAPI.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -30,10 +31,10 @@ namespace EventCatalogAPI.Controllers
             [FromQuery] int pagesize = 6)           
 
         {
-            var itemsCount = await _context.EventItems.LongCountAsync();
+            var itemsCount =  _context.EventItems.LongCountAsync();
 
             var items = await _context.EventItems
-                    .OrderBy(e => e.Name)
+                    .OrderBy(i => i.Name)
                     .Skip(pageIndex * pagesize)
                     .Take(pagesize)
                     .ToListAsync();
@@ -44,7 +45,7 @@ namespace EventCatalogAPI.Controllers
             {
                 PageIndex = pageIndex,
                 PageSize = items.Count,
-                Count = itemsCount,
+                Count = itemsCount.Result,
                 Data = items
             };
 
@@ -59,5 +60,56 @@ namespace EventCatalogAPI.Controllers
             return items;
         }
 
+        [HttpGet("[action]")]
+        public async Task <IActionResult> EventTypes()
+        {
+            var types = await _context.EventTypes.ToListAsync();
+            return Ok(types);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> EventLocations()
+        {
+            var locations = await _context.EventLocations.ToListAsync();
+            return Ok(locations);
+        }
+
+        [HttpGet("[action]/type/{eventTypeId}/location/{eventLocationId}")]
+        public async Task <IActionResult> Items(
+            int? eventTypeId,
+            int? eventLocationId,
+            [FromQuery] int pageIndex = 0,
+            [FromQuery] int pagesize = 6) 
+        {
+            var query = (IQueryable<EventItem>)_context.EventItems;
+
+            if (eventTypeId.HasValue)
+            {
+                query = query.Where(i => i.EventTypeId == eventTypeId);
+            }
+            if (eventLocationId.HasValue)
+            {
+                query = query.Where(i => i.EventLocationId == eventLocationId);
+            }
+            var itemsCount = query.LongCountAsync();
+
+            var items = await query
+                    .OrderBy(i => i.Name)
+                    .Skip(pageIndex * pagesize)
+                    .Take(pagesize)
+                    .ToListAsync();
+
+            items = ChangePictureUrl(items);
+
+            var model = new PaginatedItemsViewModel<EventItem>
+            {
+                PageIndex = pageIndex,
+                PageSize = items.Count,
+                Count = itemsCount.Result,
+                Data = items
+            };
+
+            return Ok(model);
+        }
     }
 }
